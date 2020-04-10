@@ -5,18 +5,18 @@ class Form extends Component {
         super(props);
         
         this.initialState = {
-            name: '',
-            job: ''
+            title: '',
+            note_text: ''
         };
 
         this.state = this.initialState;
     }
 
     handleChange = event => {
-        const { name, value } = event.target;
+        const { title, value } = event.target;
 
         this.setState({
-            [name] : value
+            [title] : value
         });
     }
 
@@ -28,23 +28,23 @@ class Form extends Component {
     }
 
     render() {
-        const { name, job } = this.state; 
+        const { title, note_text } = this.state;
 
         return (
             <form onSubmit={this.onFormSubmit}>
-                <label for="name">Name</label>
+                <label htmlFor="title">Title</label>
                 <input 
                     type="text" 
-                    name="name" 
-                    id="name"
-                    value={name} 
+                    title="title"
+                    id="title"
+                    value={title}
                     onChange={this.handleChange} />
-                <label for="job">Job</label>
+                <label htmlFor="note">Note</label>
                 <input 
                     type="text" 
-                    name="job" 
-                    id="job"
-                    value={job} 
+                    title="note_text"
+                    id="note_text"
+                    value={note_text}
                     onChange={this.handleChange} />
                 <button type="submit">
                     Submit
