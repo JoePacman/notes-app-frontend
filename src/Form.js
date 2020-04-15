@@ -6,7 +6,8 @@ class Form extends Component {
         
         this.initialState = {
             title: '',
-            note_text: ''
+            note_text: '',
+            last_modified_text: ''
         };
 
         this.state = this.initialState;
@@ -28,7 +29,7 @@ class Form extends Component {
     }
 
     render() {
-        const { title, note_text } = this.state;
+        const { title, note_text} = this.state;
 
         return (
             <form onSubmit={this.onFormSubmit}>

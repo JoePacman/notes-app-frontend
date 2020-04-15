@@ -6,6 +6,7 @@ const TableHeader = () => {
             <tr>
                 <th>Title</th>
                 <th>Note</th>
+                <th>Last Modified</th>
                 <th>Remove</th>
             </tr>
         </thead>
@@ -18,6 +19,7 @@ const TableBody = props => {
             <tr key={index}>
                 <td>{row.title}</td>
                 <td>{row.note_text}</td>
+                <td>{row.last_modified_date}</td>
                 <td><button onClick={() => props.removeNoteEntry(index)}>Delete</button></td>
             </tr>
         );
