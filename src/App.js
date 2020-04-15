@@ -1,18 +1,28 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Table from './Table';
 import Form from './Form';
 
 class App extends Component {
+
+    // functions of the form 'function_name(vars..) {}' need to be bound in the constructor
+    // see https://stackoverflow.com/questions/52472386/react-typeerror-this-fetchposts-is-not-a-function
+    constructor(props){
+        super(props);
+        this.createNote = this.createNote.bind(this);
+
+    }
+
     state = {
         noteEntries: []
     };
 
-    componentDidMount(){
+    componentDidMount() {
         this.getNotes()
     }
 
 
     getNotes() {
+        //TODO deploy to GCP and setup environment variables
         fetch('http://localhost:8080/note/get', {
             method: 'POST',
             headers: {
@@ -28,8 +38,8 @@ class App extends Component {
             });
     };
 
-    createNote = noteEntry => {
-        fetch('http://localhost:8080/note', {
+    async createNote(noteEntry) {
+        await fetch('http://localhost:8080/note', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,9 +52,18 @@ class App extends Component {
         })
     };
 
+    handleSubmit = noteEntry => {
+       this.createNote(noteEntry)
+            .then(() => {
+                console.log("NOT HERE");
+                this.getNotes();
+            });
+    };
+
+
     removeNoteEntry = index => {
         // TODO deleting via endpoint
-        const { noteEntries } = this.state;
+        const {noteEntries} = this.state;
 
         this.setState({
             noteEntries: noteEntries.filter((noteEntry, i) => {
@@ -53,14 +72,8 @@ class App extends Component {
         });
     };
 
-    handleSubmit = noteEntry => {
-        this.createNote(noteEntry);
-        // TODO doesn't show most recent note - read up on promises/ subscriptions?
-        this.getNotes();
-    };
-
     render() {
-        const { noteEntries } = this.state;
+        const {noteEntries} = this.state;
 
         return (
             <div className="container">
@@ -71,7 +84,7 @@ class App extends Component {
                     removeNoteEntry={this.removeNoteEntry}
                 />
                 <h3>Add New</h3>
-                <Form handleSubmit={this.handleSubmit} />
+                <Form handleSubmit={this.handleSubmit}/>
             </div>
         );
     }
