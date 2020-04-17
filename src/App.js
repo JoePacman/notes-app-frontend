@@ -8,7 +8,7 @@ class App extends Component {
     // see https://stackoverflow.com/questions/52472386/react-typeerror-this-fetchposts-is-not-a-function
     constructor(props){
         super(props);
-        this.createNote = this.createNote.bind(this);
+        this.saveNoteCall = this.saveNoteCall.bind(this);
 
     }
 
@@ -38,7 +38,7 @@ class App extends Component {
             });
     };
 
-    async createNote(noteEntry) {
+    async saveNoteCall(noteEntry) {
         await fetch('http://localhost:8080/note', {
             method: 'POST',
             headers: {
@@ -52,24 +52,32 @@ class App extends Component {
         })
     };
 
-    handleSubmit = noteEntry => {
-       this.createNote(noteEntry)
+    saveNote = noteEntry => {
+       this.saveNoteCall(noteEntry)
             .then(() => {
-                console.log("NOT HERE");
                 this.getNotes();
             });
     };
 
+    async removeNoteCall(noteEntry) {
+        await fetch('http://localhost:8080/note', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "title": noteEntry.title,
+            })
+        })
+    };
+
 
     removeNoteEntry = index => {
-        // TODO deleting via endpoint
         const {noteEntries} = this.state;
-
-        this.setState({
-            noteEntries: noteEntries.filter((noteEntry, i) => {
-                return i !== index;
-            })
-        });
+        this.removeNoteCall(noteEntries[index])
+            .then(() => {
+                this.getNotes();
+            });
     };
 
     render() {
@@ -84,7 +92,7 @@ class App extends Component {
                     removeNoteEntry={this.removeNoteEntry}
                 />
                 <h3>Add New</h3>
-                <Form handleSubmit={this.handleSubmit}/>
+                <Form saveNote={this.saveNote}/>
             </div>
         );
     }
