@@ -53,7 +53,8 @@ class App extends Component {
     };
 
     saveNote = noteEntry => {
-       this.saveNoteCall(noteEntry)
+        console.log(process.env.REACT_APP_API_BASE);
+        this.saveNoteCall(noteEntry)
             .then(() => {
                 this.getNotes();
             });
